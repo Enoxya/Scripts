@@ -1,0 +1,1 @@
+Get-ADPrincipalGroupMembership USERNAME | select name

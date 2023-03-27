@@ -1,0 +1,1 @@
+get-adgroupmember -Identity Services-SvcsTech-Dev_Lecture | select name > C:\users\admin\Desktop\Services-SvcsTech-Dev_Lecture.txt

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Messages xmlns="http://www.phast.fr/SIPhII" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.phast.fr/SIPhII Phast-SIPhII.2.3.12.xsd" Phast-version="2.3.2">
+	<M_Prescription_médicaments>
+		<Patient>
+			<Ipp>005241106</Ipp>
+			<Nom_usuel>PACCAUD</Nom_usuel>
+			<Nom_naissance>BASSET</Nom_naissance>
+			<Prénoms>DESIREE</Prénoms>
+			<Date_naissance>19371101000000</Date_naissance>
+			<Sexe>F</Sexe>
+		</Patient>
+		<Séjour>
+			<Id_séjour>090534240</Id_séjour>
+		</Séjour>
+		<Prescription>
+			<Mode_communication>1</Mode_communication>
+			<Dh_prescription>20211011120105</Dh_prescription>
+			<Unité_hébergement Phast-nomenclature="HM_UF">4255</Unité_hébergement>
+			<Unité_resp_médicale Phast-nomenclature="HM_UF">4255</Unité_resp_médicale>
+			<Rens_compl>
+				<Code_rens_compl>1</Code_rens_compl>
+				<Dh_enreg_rens_compl>20211011115000</Dh_enreg_rens_compl>
+				<Valeur_rens_compl>69</Valeur_rens_compl>
+			</Rens_compl>
+			<Rens_compl>
+				<Code_rens_compl>2</Code_rens_compl>
+				<Dh_enreg_rens_compl>20211011115000</Dh_enreg_rens_compl>
+				<Valeur_rens_compl>168</Valeur_rens_compl>
+			</Rens_compl>
+			<Elément_prescr_médic>
+				<Id_élément_prescr>2021101112388329</Id_élément_prescr>
+				<Type_élément_prescr Phast-nomenclature="SIPh_TypeEltPLA">0</Type_élément_prescr>
+				<Libellé_élément_prescr>Par voie intraveineuse :  de 1 à 3 ampoules par jour si besoin, 1 ampoule maximum par prise, intervalle entre deux prises 8 heures -- À partir du 11/10/2021 à 11:50 jusqu'au (indéterminé)</Libellé_élément_prescr>
+				<Cré_arr_mod_val>A</Cré_arr_mod_val>
+				<Fourniture>1</Fourniture>
+				<Id_prescripteur>10002400139;3;MOREL;Arnaud</Id_prescripteur>
+				<Voie_administration>49</Voie_administration>
+				<Dh_début>20211011115000</Dh_début>
+				<Dh_fin>20211012101300</Dh_fin>
+				<Composant_prescrit>
+					<Type_composant_1>1</Type_composant_1>
+					<Code_composant_1>9348555</Code_composant_1>
+					<Libellé_composant>NEFOPAM MYL 20MG/2ML INJ AMP</Libellé_composant>
+					<Quantité_composant_prescrite>
+						<Nombre>1</Nombre>
+						<Unité>amp</Unité>
+					</Quantité_composant_prescrite>
+				</Composant_prescrit>
+				<Elément_posologie>
+					<Type_événement_début Phast-nomenclature="SIPh_TypeEvenement">3</Type_événement_début>
+					<Evénement_début Phast-nomenclature="HM_EvtDebSurvenuSigne">Si besoin</Evénement_début>
+					<Quantité>
+						<Nombre>1</Nombre>
+						<Unité>amp</Unité>
+					</Quantité>
+				</Elément_posologie>
+				<Elément_posologie>
+					<Type_événement_début Phast-nomenclature="SIPh_TypeEvenement">4</Type_événement_début>
+					<Evénement_début Phast-nomenclature="SIPh_ParamPosoConditionnelle">3</Evénement_début>
+					<Quantité>
+						<Nombre>3</Nombre>
+						<Unité>amp</Unité>
+					</Quantité>
+				</Elément_posologie>
+				<Elément_posologie>
+					<Type_événement_début Phast-nomenclature="SIPh_TypeEvenement">4</Type_événement_début>
+					<Evénement_début Phast-nomenclature="SIPh_ParamPosoConditionnelle">2</Evénement_début>
+					<Quantité>
+						<Nombre>1</Nombre>
+						<Unité>amp</Unité>
+					</Quantité>
+				</Elément_posologie>
+				<Elément_posologie>
+					<Type_événement_début Phast-nomenclature="SIPh_TypeEvenement">4</Type_événement_début>
+					<Evénement_début Phast-nomenclature="SIPh_ParamPosoConditionnelle">1</Evénement_début>
+					<Quantité>
+						<Nombre>8</Nombre>
+					</Quantité>
+				</Elément_posologie>
+			</Elément_prescr_médic>
+		</Prescription>
+	</M_Prescription_médicaments>
+</Messages>

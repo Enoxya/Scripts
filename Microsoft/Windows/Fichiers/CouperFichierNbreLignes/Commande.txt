@@ -1,0 +1,1 @@
+New-SplitFiles -DirectoryContainingFiles C:\XXXXXXXXX -LineNumberToSplitOn 65530 -Recurse

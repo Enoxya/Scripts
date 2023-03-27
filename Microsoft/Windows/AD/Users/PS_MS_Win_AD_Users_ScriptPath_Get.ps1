@@ -1,0 +1,1 @@
+﻿Get-AdUser -Filter {ScriptPath -like "*Login_Agirh_applidis_montrevel.bat*" -or ScriptPath -like "*AppliDis*"} -Properties * | Select SamAccountName,HomeDirectory,HomeDrive,ScriptPath 

@@ -1,0 +1,16 @@
+PC-BLOCACC-SC2 est un Windows 7 - 64 bits ayant la KB KB2999226
+PC-CPLANIF-C1 n'est pas connecté au réseau
+PC-CPLANIF-S1 est un Windows 7 - 32 bits ayant la KB KB2999226
+PC-DAN-SC1 est un Windows 7 - 32 bits ayant la KB KB2999226
+PC-GYNECO-A2 est un Windows 7 - 32 bits ayant la KB KB2999226
+PC-GYNECO-M2 n'est pas connecté au réseau
+PC-GYNECO-M3 est un Windows 7 - 64 bits ayant la KB KB2999226
+PC-GYNECO-M4 est un Windows 7 - 64 bits ayant la KB KB2999226
+PC-GYNECO-S6 est un Windows 7 - 32 bits ayant la KB KB2999226
+PC-GYNECO-SE1 est un Windows 7 - 64 bits ayant la KB KB2999226
+PC-GYNECO-SE2 est un Windows 7 - 64 bits ayant la KB KB2999226
+PC-GYNECO-SE3 est un Windows 7 - 64 bits ayant la KB KB2999226
+PC-GYNECO-SF est un Windows 7 - 64 bits ayant la KB KB2999226
+PC-OBSTET-SF1 est un Windows 7 - 32 bits ayant la KB KB2999226
+PC-OBSTET-SF3 est un Windows 7 - 32 bits ayant la KB KB2999226
+Fin de la vérification

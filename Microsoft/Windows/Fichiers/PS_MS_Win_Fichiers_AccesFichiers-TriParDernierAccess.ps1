@@ -1,0 +1,1 @@
+﻿Get-ChildItem -recurse . | select Name, LastAccessTime, Directory |sort LastAccessTime > NOMDUDOSSIER_ListeAccesParDate.txt
