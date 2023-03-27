@@ -1,0 +1,1 @@
+rd "\\?\C:\holds bad subdir\20120530-04 "

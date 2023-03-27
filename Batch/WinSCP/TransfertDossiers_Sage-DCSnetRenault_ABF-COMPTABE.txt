@@ -1,0 +1,9 @@
+# Connect
+open sftp://root:dcsnet@210.183.153.15:22/ -hostkey="ssh-rsa 2048 3a:c9:6b:e9:c8:fb:42:4f:20:c0:4f:4c:bd:f3:c8:9d"
+# Change remote directory
+cd ../u1/arsvo/SAGE1000IMPORT/COMPTABE
+# Download file to the local directory d:\
+put "%1%"
+
+# Exit WinSCP
+exit
