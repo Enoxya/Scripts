@@ -1,0 +1,1 @@
+Get-Mailbox -Resultsize Unlimited | Group-Object -Property:Database | Select-Object Name,Count | Sort-Object Name | Format-Table -Auto

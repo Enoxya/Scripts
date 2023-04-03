@@ -1,0 +1,1 @@
+﻿get-adgroupmember "PSO_SVI-Viriat" | Select name, samaccountname | Export-Csv -Path "C:\Users\saunies\Desktop\SVI.csv" -NoTypeInformation -Encoding UTF8

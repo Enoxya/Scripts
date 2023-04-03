@@ -1,0 +1,1 @@
+﻿netdom renamecomputer BSBPBOFOURN /newname:BSBPBOFOUR /userd:BERNARD\gadennj /passwordd:**** /force 
