@@ -8,14 +8,24 @@ $FichierExcel_Sortie = "import_compte.xlsx"
 ##FONCTIONS
 #Fonction qui exporte le contenu du fichier Excel en fichier CSV
 Function ExcelToCsv ($FileXls_In, $FileCSV_Out) {
+    $xlCSV = 6
     $Excel = New-Object -ComObject Excel.Application
     $Excel.DisplayAlerts = $false
     $Excel.visible = $false
-    $wb = $Excel.Workbooks.Open($FileXls_In)
+    $wb = $Excel.Workbooks.Open($Repertoire_Travail + "\" + $FileXls_In)
+    $ws = $wb.Worksheets("Feuil1")
+    <#
+    Ou on fait une boucle sur chaque feuille du classeur
     foreach ($ws in $wb.Worksheets) {
-        $ws.SaveAs($FileCSV_Out, 42)
+        $ws.SaveAs($FileCSV_Temp, 42, 0, 0, 0, 0, 0, 0, 0, $true)
     }
-    #Avant de fermer Excel on ferme bine tous les classeurs
+    #>
+
+    # use [Type]::Missing for parameters that should remain at their default values
+    $useDefault = [Type]::Missing
+    $ws.SaveAs($FileCSV_Out,$xlCSV,$useDefault,$useDefault,$false,$false,$false,$useDefault,$useDefault,$true)
+    
+    #Avant de fermer Excel on ferme bien tous les classeurs
     while ($Excel.Workbooks.Count -gt 0) {
         $Excel.Workbooks.Item(1).Close()
     }
@@ -94,4 +104,10 @@ ExcelToCsv $FichierExcel_Entree $FichierCSV_Sortie
 #On renomme le fichier transformé de "import_compte_$DateDuJour.csv" en "import_compte.csv"
 Rename-Item -Path $FichierCSV_Sortie -NewName ($Repertoire_Travail + "\" + $FichierCSV_Entree)
 #On supprime le fichier "xlsx" créé temporairement
-Remove-Item -Path ($Repertoire_Travail + "\" + $FichierExcel_Sortie)
+if (!$FichierExcel_Sortie) {
+    Write-Host "Fichier Excel vide, on ne fait rien (sinon ca supprime le dossier Z:\Monewin)"
+}
+else {
+    #Remove-Item -Path ($Repertoire_Travail + "\" + $FichierExcel_Sortie)
+    Move-Item -Path ($Repertoire_Travail + "\" + $FichierExcel_Sortie) -Destination ($Repertoire_Backup +"\"+ ($FichierExcel_Sortie -replace '.{5}$')+"_$DateDuJour.xlsx")
+}
