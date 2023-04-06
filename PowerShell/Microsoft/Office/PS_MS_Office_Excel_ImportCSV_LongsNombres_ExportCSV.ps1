@@ -8,22 +8,15 @@ $FichierExcel_Sortie = "import_compte.xlsx"
 ##FONCTIONS
 #Fonction qui exporte le contenu du fichier Excel en fichier CSV
 Function ExcelToCsv ($FileXls_In, $FileCSV_Out) {
-    $xlCSV = 6
+    $xlCSV = [Microsoft.Office.Interop.Excel.XlFileFormat]::xlCSV
     $Excel = New-Object -ComObject Excel.Application
     $Excel.DisplayAlerts = $false
     $Excel.visible = $false
-    $wb = $Excel.Workbooks.Open($Repertoire_Travail + "\" + $FileXls_In)
+    $wb = $Excel.Workbooks.Open($FileXls_In) # si Get-ChildItem alors mettre $Repertoire_Travail + "\" + $FileXls_In
     $ws = $wb.Worksheets("Feuil1")
-    <#
-    Ou on fait une boucle sur chaque feuille du classeur
-    foreach ($ws in $wb.Worksheets) {
-        $ws.SaveAs($FileCSV_Temp, 42, 0, 0, 0, 0, 0, 0, 0, $true)
-    }
-    #>
 
-    # use [Type]::Missing for parameters that should remain at their default values
     $useDefault = [Type]::Missing
-    $ws.SaveAs($FileCSV_Out,$xlCSV,$useDefault,$useDefault,$false,$false,$false,$useDefault,$useDefault,$true)
+    $ws.SaveAs($FileCSV_Out,$xlCSV, $useDefault, $useDefault, $false, $false, $false, $useDefault, $useDefault, $true)
     
     #Avant de fermer Excel on ferme bien tous les classeurs
     while ($Excel.Workbooks.Count -gt 0) {
@@ -38,10 +31,20 @@ Function ExcelToCsv ($FileXls_In, $FileCSV_Out) {
 }
 
 ##PROGRAMME
-#On importe les donn√©es du fichier CSV dans une variable
-$Donnees = Import-Csv -Path ($Repertoire_Travail + "\" + $FichierCSV_Entree) -Header 1,2,3,4,5,6,7,8,9,10 -Delimiter ";" -Encoding utf8
+#On importe les donnÈes du fichier CSV dans une variable
+$FichierCSV_Entree_Temp = Get-Content ($Repertoire_Travail + "\" + $FichierCSV_Entree)
+#Backup
+#On dÈplace le fichier "import_compte" du jour (avant modification) dans le dossier de Backup et on le renomme ‡†la date du jour
+Move-Item -Path ($Repertoire_Travail + "\" + $FichierCSV_Entree) -Destination ($Repertoire_Backup +"\"+ ($FichierCSV_Entree -replace '.{4}$')+"_$DateDuJour`_Origine.csv")
 
-#On ouvre excel, on cr√©√© un classeur, on change le format de la colonne 8 (@ = Texte)
+$FichierCSV_Sortie_Temp = $Repertoire_Travail + "\" + $FichierCSV_Entree
+$FichierCSV_Entree_Temp | Out-File $FichierCSV_Sortie_Temp
+$Donnees = Import-Csv -Path $FichierCSV_Sortie_Temp -Header 1,2,3,4,5,6,7,8,9,10 -Delimiter ";" -Encoding ASCII
+
+#On a fini avec le fichier "CSV Entree" alors on le dÈplace dans "Backup" en le renommant au passage lui aussi :
+Move-Item -Path ($Repertoire_Travail + "\" + $FichierCSV_Entree) -Destination ($Repertoire_Backup +"\"+ ($FichierCSV_Entree -replace '.{4}$')+"_$DateDuJour`_Temp.csv")
+
+#On ouvre excel, on crÈÈ un classeur, on change le format de la colonne 8 (@ = Texte)
 $Excel = New-Object -ComObject excel.Application
 $Excel.DisplayAlerts = $false
 $Excel.visible = $false
@@ -50,7 +53,7 @@ $WorkSheet = $WorkBook.ActiveSheet
 $WorkSheet.activate()
 $WorkSheet.Columns.Item(8).NumberFormat = "@" 
 
-#On boucle sur chaque ligne de la variable remplie pr√©c√©demment par le contenu du fichier CSV pour remplir le fichier Excel
+#On boucle sur chaque ligne de la variable remplie prÈcÈdemment par le contenu du fichier CSV pour remplir le fichier Excel
 $i = 1
 foreach ($Donnee in $Donnees) {
     $Excel.Cells.Item($i,1) = $Donnee.1
@@ -66,19 +69,19 @@ foreach ($Donnee in $Donnees) {
     $i++
 }
 
-##Gestion des √©tudiants boursiers - Repas √† 1‚Ç¨
-#Changement intitul√© colonne si telle autre colonne contient telle valeur
+##Gestion des Ètudiants boursiers - Repas ‡ 1Ä
+#Changement intitulÈ colonne si telle autre colonne contient telle valeur
 $NbreLignes = $WorkSheet.UsedRange.Rows.Count
 For($j=1;$j -lt $NbreLignes+1 ;$j++) { 
     $ValeurCellule = $WorkSheet.Cells.Item($j, 7).Value2
     #Si la cellule en question contiennt telle valeur
     if ($ValeurCellule -eq "B") {
-        Write-Host "Il y a la valeur 'B' √† la ligne " $i
-        #Alors on change l'intitul√©
-        $WorkSheet.Cells.Item($j, 6).Value2 = "Etudiants IFSI 1‚Ç¨"
+        Write-Host "Il y a la valeur 'B' ‡†la ligne " $j
+        #Alors on change l'intitulÈ
+        $WorkSheet.Cells.Item($j, 6).Value2 = "Etudiants IFSI 1Ä"
     } 
 }
-#Suppression colonne G - la 7i√®me - qui contient la lettre identifiant les boursiers (B)
+#Suppression colonne G - la 7iËme - qui contient la lettre identifiant les boursiers (B)
 $WorkSheet.Columns.Item(7).EntireColumn.Delete()
 
 #Sauvegarde fichier xlsx + on ferme Excel
@@ -92,18 +95,13 @@ $Excel.Quit
 [System.GC]::WaitForPendingFinalizers()
 Remove-Variable -Name Excel
 
-##Backup
-#On d√©place le fichier "import_compte" du jour (avant modification) dans le dossier de Backup et on le renomme √† la date du jour
-Move-Item -Path ($Repertoire_Travail + "\" + $FichierCSV_Entree) -Destination ($Repertoire_Backup +"\"+ ($FichierCSV_Entree -replace '.{4}$')+"_$DateDuJour.csv")
+#On se sert du fichier xlsx crÈÈ pour le re-exporter en CSV
+$FichierExcel_Entree = ($Repertoire_Travail + "\" + $FichierExcel_Sortie) #Get-ChildItem $Repertoire_Travail -filter *.xlsx
 
-#On se sert du fichier xlsx cr√©√© pour le re-exporter en CSV
-$FichierExcel_Entree = Get-ChildItem $Repertoire_Travail -filter *.xlsx
-$FichierCSV_Sortie = $Repertoire_Travail + "\" + ($FichierExcel_Entree.Name -replace (".xlsx","_$DateDuJour.csv"))
-ExcelToCsv $FichierExcel_Entree $FichierCSV_Sortie
+#Appel de la fonction
+ExcelToCsv $FichierExcel_Entree $FichierCSV_Sortie_Temp
 
-#On renomme le fichier transform√© de "import_compte_$DateDuJour.csv" en "import_compte.csv"
-Rename-Item -Path $FichierCSV_Sortie -NewName ($Repertoire_Travail + "\" + $FichierCSV_Entree)
-#On supprime le fichier "xlsx" cr√©√© temporairement
+#On sauvegarde le fichier Excel dans "Backup"
 if (!$FichierExcel_Sortie) {
     Write-Host "Fichier Excel vide, on ne fait rien (sinon ca supprime le dossier Z:\Monewin)"
 }
