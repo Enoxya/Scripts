@@ -1,0 +1,1 @@
+"DB07","DB08" | Set-MailboxDatabase -IsExcludedFromProvisioning:$true
