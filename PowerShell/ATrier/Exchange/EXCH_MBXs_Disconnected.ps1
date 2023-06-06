@@ -1,1 +1,0 @@
-﻿Get-MailboxStatistics -Server SRV-NOR-MBX3 | Where { $_.DisconnectReason -ne $null } | Sort-Object Database | ft DisplayName, Database, DisconnectDate, DisconnectReason | Out-File C:\Users\saunies\Desktop\MBX3.txt
