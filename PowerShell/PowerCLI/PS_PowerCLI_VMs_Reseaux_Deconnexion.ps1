@@ -24,7 +24,7 @@ function vCenter_Connexion {
 
 function VMs_Liste_Creation {
     #Récupération de la liste des VMs (Nom et état)
-    $script:VMs_Liste =  Get-VM |Where {$_.Name -eq "CHB-DRH-VMX-01"} #| Select Name, PowerState
+    $script:VMs_Liste =  Get-VM | Where {$_.Name -eq "CHB-DRH-VMX-01"} #| Select Name, PowerState
     write-host "La liste des VMs a bien été récupérée.`n`nAffichage de la liste des VMs :"
     Start-Sleep -Seconds 2
     write-Host $script:VMs_Liste.Name
