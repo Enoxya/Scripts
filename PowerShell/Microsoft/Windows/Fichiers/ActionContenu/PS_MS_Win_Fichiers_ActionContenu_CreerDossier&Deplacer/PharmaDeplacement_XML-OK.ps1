@@ -15,14 +15,14 @@ $extensionFichier = "*.xml"
 $texte_ARechercher = '"HM_UF">'
 
 
-$listeFichiersXML = Get-ChildItem $dossier_RechercheFichiersXML -Filter $extensionFichier | %{$_.FullName} 
+$listeFichiersXML = Get-ChildItem $dossier_RechercheFichiersXML -Filter $extensionFichier | ForEach-Object {$_.FullName} 
 Foreach ($fichierXML in $listeFichiersXML) {
-    $fichierXML_Contenu = Select-String -Path $fichierXML -Pattern $texte_ARechercher -CaseSensitive -SimpleMatch -List | %{$_.Line}
+    $fichierXML_Contenu = Select-String -Path $fichierXML -Pattern $texte_ARechercher -CaseSensitive -SimpleMatch -List | ForEach-Object {$_.Line}
     if ($fichierXML_Contenu) {
 
         $fichierXML_ContenantUF = $fichierXML
         $fichierOK = $fichierXML_ContenantUF -Replace '\.xml','.ok'
-        echo `n`n`n
+        Write-Output `n`n`n
         #write-host "Nom du fichier en cours de traitement :" $fichierXML
         #write-host "Contenu du fichier en cours de traitement :" $fichierXML_Contenu
             
