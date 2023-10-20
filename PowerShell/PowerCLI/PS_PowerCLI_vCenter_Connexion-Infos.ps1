@@ -11,4 +11,4 @@ function vCenter_Connexion {
 }
 
 vCenter_Connexion
-$global:DefaultVIServers | Select Name, Version, Build
+$global:DefaultVIServers | Select-Object Name, Version, Build

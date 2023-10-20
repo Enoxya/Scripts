@@ -10,7 +10,7 @@ function Get-InstallPath {
    $regKeys = Get-ItemProperty "hklm:\software\VMware, Inc.\VMware vSphere PowerCLI" -ErrorAction SilentlyContinue
    
    #64bit os fix
-   if($regKeys -eq $null){
+   if($null -eq $regKeys){
       $regKeys = Get-ItemProperty "hklm:\software\wow6432node\VMware, Inc.\VMware vSphere PowerCLI"  -ErrorAction SilentlyContinue
    }
 
@@ -34,7 +34,7 @@ $moduleList = @(
 function LoadModules(){
    $loaded = Get-Module -Name $moduleList -ErrorAction Ignore | % {$_.Name}
    $registered = Get-Module -Name $moduleList -ListAvailable -ErrorAction Ignore | % {$_.Name}
-   $notLoaded = $registered | ? {$loaded -notcontains $_}
+   $notLoaded = $registered | Where-Object {$loaded -notcontains $_}
    
    foreach ($module in $registered) {
       if ($loaded -notcontains $module) {
@@ -70,7 +70,7 @@ function LoadSnapins(){
 
    $loaded = Get-PSSnapin -Name $snapinList -ErrorAction Ignore | % {$_.Name}
    $registered = Get-PSSnapin -Name $snapinList -Registered -ErrorAction Ignore  | % {$_.Name}
-   $notLoaded = $registered | ? {$loaded -notcontains $_}
+   $notLoaded = $registered | Where-Object {$loaded -notcontains $_}
    
    foreach ($snapin in $registered) {
       if ($loaded -notcontains $snapin) {
@@ -237,7 +237,7 @@ if((Get-PSVersion) -eq "2.0"){
                    
                    if($values) {
                       if ($startsWith) {
-                          return ($values | where { $_ -like "${startsWith}*" })
+                          return ($values | Where-Object { $_ -like "${startsWith}*" })
                       } else {
                           return $values
                       }
@@ -273,7 +273,7 @@ Try	{
 	$configuration = Get-PowerCLIConfiguration -Scope Session
 
 	if ($promptForCEIP -and
-		$configuration.ParticipateInCEIP -eq $null -and `
+		$null -eq $configuration.ParticipateInCEIP -and `
 		[VMware.VimAutomation.Sdk.Util10Ps.CommonUtil]::InInteractiveMode($Host.UI)) {
 
 		# Prompt
