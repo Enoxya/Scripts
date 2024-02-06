@@ -37,7 +37,7 @@ Foreach ($Datastore in $Datastores) {
                 #C'est bien le cas => OK
             }
             else {
-                $Erreur = "Problème d'ESX : la VM $($VM.Name) est sur l'ESX $((Get-VMHost -VM $VM.Name).Name) alors que son datastore $($Datastore.Name)  est dans le CG $ConsistencyGroup_Ki_Nom"
+                $Erreur = "Problème d'ESX : la VM $($VM.Name) est sur l'ESX $((Get-VMHost -VM $VM.Name).Name) alors que son datastore $($Datastore.Name) est dans le CG $ConsistencyGroup_Ki_Nom"
             }
         }
         else {

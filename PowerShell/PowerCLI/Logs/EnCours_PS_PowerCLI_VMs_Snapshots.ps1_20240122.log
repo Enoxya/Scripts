@@ -1,0 +1,4 @@
+@{VM=PCX-INFO-GHT; Snapshot Name=Apres_Install_Client_SCCM; Created Date=20/12/2023 16:31:06; Snapshot Size=21,832540160976350307464599609; Number of days since creation=4 Semaine, 4 Jours, 16 Heures, 18 Minutes, 15 Secondes}
+@{VM=CHB-ADMIN-BC; Snapshot Name=Snapshot de VM 27/12/2023, 10:46:39; Created Date=27/12/2023 10:46:42; Snapshot Size=10,548962036147713661193847656; Number of days since creation=3 Semaine, 4 Jours, 22 Heures, 2 Minutes, 41 Secondes}
+@{VM=Apex1-Server; Snapshot Name=Avant_Patch_12534; Created Date=02/01/2024 09:47:56; Snapshot Size=30,356227529235184192657470703; Number of days since creation=2 Semaine, 5 Jours, 23 Heures, 1 Minutes, 27 Secondes}
+@{VM=CHB-GLPI; Snapshot Name=Avant maj 10.11; Created Date=15/01/2024 12:17:10; Snapshot Size=6,2232264373451471328735351562; Number of days since creation=6 Jours, 20 Heures, 32 Minutes, 14 Secondes}
