@@ -1,11 +1,7 @@
 #Add-PSSnapin VMware.VimAutomation.Core
 #Add-PSSnapin VMware.PowerCLI
  
-$ESXserver = "bob.sia-f.local"
-$ESXUser = "sia-f.local\vCenter_SSAUNIER"
-$ESXPwd = "+W{C'b[)av1?O,]"
- 
-Connect-VIServer $ESXserver -User $ESXUser -Password $ESXPwd
+.\PowerShell\PowerCLI\PS_PowerCLI_vCenter_Connexion-Infos.ps1
 
 $vmdkds=@()
 $vmdkvm=@()

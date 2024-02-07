@@ -9,7 +9,7 @@ $To = "supervision@localhost"
 $Smtp = "smtp.localdomain"
 $SeuilAlerte = 25
  
-Connect-VIServer $ESXserver -User $ESXUser -Password $ESXPwd
+.\PowerShell\PowerCLI\PS_PowerCLI_vCenter_Connexion-Infos.ps1
  
 $DatastoreArray = Get-Datastore
 foreach ($Datastore in $DatastoreArray) {
@@ -18,7 +18,8 @@ foreach ($Datastore in $DatastoreArray) {
     $FreeProp = ($MBAvail/$MBTotal) * 100
     if ($FreeProp -lt $SeuilAlerte) {
         $FreeProp = [math]::Round($FreeProp,1)
-        $MailString = "Bonjour, le datastore '$Datastore' n'a plus que $FreeProp % de libre."
-        Send-MailMessage -From $From -To $To -Subject "Alerte occupation Datastore" -SmtpServer $Smtp -Body $MailString
+        $MailString_DS = "Le datastore '$Datastore' n'a plus que $FreeProp % de libre."
+        $ContenuMail_DS += $MailString_DS
     }
 }
+Send-MailMessage -From $From -To $To -Subject "Alerte occupation Datastore" -SmtpServer $Smtp -Body $ContenuMail_DS

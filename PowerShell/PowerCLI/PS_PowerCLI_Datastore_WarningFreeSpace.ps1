@@ -11,7 +11,7 @@ $SeuilAlerte = 25
 
 $ESXserver = "bob.sia-f.local"
 $ESXUser = "sia-f.local\vCenter_SSAUNIER"
-$ESXPwd = "+W{C'b[)av1?O,]"
+$ESXPwd = ""
 
 Connect-VIServer $ESXserver -User $ESXUser -Password $ESXPwd
  
