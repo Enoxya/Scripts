@@ -54,7 +54,7 @@ $allDetails = @()
 # Load Snap-ins
 
 # Add Veeam snap-in if required
-If ((Get-PSSnapin -Name VeeamPSSnapin -ErrorAction SilentlyContinue) -eq $null) {add-pssnapin VeeamPSSnapin}
+If ($null -eq (Get-PSSnapin -Name VeeamPSSnapin -ErrorAction SilentlyContinue)) {add-pssnapin VeeamPSSnapin}
 
 #--------------------------------------------------------------------
 # Functions
@@ -68,7 +68,7 @@ Write-Host "$scriptName`tVer:$scriptVer`t`t`tStart Time:`t$starttime"
 Write-Host "********************************************************************************`n"
 
 # Get Backup Jobs
-$jobs = Get-VBRJob | ?{$_.JobType -eq "Backup"}
+$jobs = Get-VBRJob | Where-Object{$_.JobType -eq "Backup"}
 
 # Loop through each job adding details to array
 foreach ($job in $jobs) {
@@ -76,7 +76,7 @@ foreach ($job in $jobs) {
 	$jobOptions | Add-Member -MemberType NoteProperty -Name "Name" -value $job.name
 	$jobOptions | Add-Member -MemberType NoteProperty -Name "Enabled" -value $job.isscheduleenabled
 	$jobOptions | Add-Member -MemberType NoteProperty -Name "Backup Mode" -value $job.backuptargetoptions.algorithm
-	$repo = (Get-VBRBackupRepository | ?{$_.HostId -eq $job.TargetHostId -and $_.Path -eq $job.TargetDir}).name
+	$repo = (Get-VBRBackupRepository | Where-Object{$_.HostId -eq $job.TargetHostId -and $_.Path -eq $job.TargetDir}).name
 	$jobOptions | Add-Member -MemberType NoteProperty -Name "Repository" -value $repo
 	$proxies = $null
 	foreach ($prox in ($job | get-vbrjobproxy)) {
@@ -124,7 +124,7 @@ foreach ($job in $jobs) {
 # Outputs
 
 # Display results summary
-$allDetails | select Name, Enabled | Sort Name | ft -AutoSize
+$allDetails | Select-Object Name, Enabled | Sort-Object Name | Format-Table -AutoSize
 
 If (!$path -or !$path.EndsWith(".csv")) {
 	Write-Host "`n`nUsing Default Path"
@@ -136,7 +136,7 @@ If (!$path -or !$path.EndsWith(".csv")) {
 }
 
 # Export results
-$allDetails | Sort Name | Export-Csv $path -NoTypeInformation -Force
+$allDetails | Sort-Object Name | Export-Csv $path -NoTypeInformation -Force
 
 # Open csv
 If ($autoLaunch) {
@@ -152,4 +152,4 @@ Write-Host "********************************************************************
 # Prompt to exit script - This leaves PS window open when run via right-click
 Write-Host "`n`n"
 Write-Host "Press any key to continue ..." -foregroundcolor Gray
-$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+#$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
