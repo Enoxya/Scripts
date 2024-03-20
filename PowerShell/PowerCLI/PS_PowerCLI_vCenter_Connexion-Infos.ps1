@@ -4,11 +4,11 @@ function vCenter_Connexion {
     Try {
         Connect-VIServer -server $vCenter -EA Stop | Out-Null
     } Catch {
-        "`r`n`r`nImpossible de se connecter au vCenter $vCenter" #>> $log_Fichier_Chemin
-        "Fin du programme...`r`n`r`n" #>> $log_Fichier_Chemin
+        "`r`n`r`nImpossible de se connecter au vCenter $vCenter" >> $log_Fichier_Chemin
+        "Fin du programme...`r`n`r`n" >> $log_Fichier_Chemin
         Exit
     }
 }
 
 vCenter_Connexion
-#$global:DefaultVIServers | Select-Object Name, Version, Build
+$global:DefaultVIServers | Select-Object Name, Version, Build

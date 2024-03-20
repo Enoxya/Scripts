@@ -1,0 +1,29 @@
+Mailbox Permission Pack - PowerShell scripts to report on Mailbox permissions in Exchange Online and Exchange On-Premises
+
+This pack of eight scripts will report on Send As, Send on Behalf and Full Access in both Exchange Online and Exchange Local. Includes reports on which mailboxes a particular user has access to and report on all mailboxes that are configured with permissions and who has that access.
+
+Script Download - https://goo.gl/R2QcmD
+Support URL - https://goo.gl/dr8R1v
+
+--- Exchange Online Reports
+- Single script creates a csv report for each of the following
+- - All online mailboxes configured with Full Access permission and which accounts have that permission
+- - All online mailboxes configured with Send As Access permission and which accounts have that permission
+- - All online mailboxes configured with Send on Behalf permission which accounts have that permission
+
+Individual scripts perform the following
+- Displays on screen the mailboxes that a specific mailbox or mail enabled security group has Send On Behalf permission to
+- Displays on screen the mailboxes that a specific mailbox or mail enabled security group has Full Access permission to
+- Displays on screen the mailboxes that a specific mailbox or mail enabled security group has Send As permission to
+
+--- Exchange On-Premises Reports
+- - Single script creates a csv report for each of the following
+- - All on-premises mailboxes configured with Full Access permission and which accounts have that permission
+- - All on-premises mailboxes configured with Send As Access permission and which accounts have that permission
+- - All on-premises mailboxes configured with Send on Behalf permission which accounts have that permission
+
+Individual scripts perform the following
+- Displays on screen the mailboxes that a specific mailbox or mail enabled security group has Send On Behalf permission to
+- Displays on screen the mailboxes that a specific mailbox or mail enabled security group has Full Access permission to
+- Displays on screen the mailboxes that a specific mailbox or mail enabled security group has Send As permission to
+
