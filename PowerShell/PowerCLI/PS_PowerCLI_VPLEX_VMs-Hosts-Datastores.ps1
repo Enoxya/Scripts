@@ -1,4 +1,5 @@
 
+$Date = (Get-Date).ToString("yyyyMMdd")
 $Rapport = @()
 $Domaine = 'chb.ts1.local'
 $ESX_Gamma = @("gaza.$Domaine", "geneve.$Domaine", "gibraltar.$Domaine", "grenade.$Domaine")
@@ -8,6 +9,8 @@ $ConsistencyGroup_Ki_Nom = 'PRIO_KI'
 $ConsistencyGroup_Gamma_VirtualVolumes = @('Unity-VPLEX_2To_01', 'Unity-VPLEX_2To_03', 'Unity-VPLEX_2To_05', 'Unity-VPLEX_2To_07', 'Unity-VPLEX_4To_01')
 $ConsistencyGroup_Ki_VirtualVolumes =  @('Unity-VPLEX_2To_02', 'Unity-VPLEX_2To_04', 'Unity-VPLEX_2To_06', 'Unity-VPLEX_4To_02')
 
+
+.\PowerShell\PowerCLI\PS_PowerCLI_vCenter_Connexion-Infos.ps1
 
 $Datastores = Get-datastore | Where-Object {$_.name -like '*VPLEX*'} | Sort-Object
 Foreach ($Datastore in $Datastores) {
@@ -49,4 +52,4 @@ Foreach ($Datastore in $Datastores) {
     }
 }
 $Rapport | Format-Table -AutoSize
-$Rapport | Export-csv -Path C:\Temp\VPLEX_VMs-DS-ESX.csv -NoTypeInformation -Delimiter ";" -Encoding Unicode
+$Rapport | Export-csv -Path C:\Temp\VPLEX_VMs-DS-ESX_$Date.csv -NoTypeInformation -Delimiter ";" -Encoding Unicode
