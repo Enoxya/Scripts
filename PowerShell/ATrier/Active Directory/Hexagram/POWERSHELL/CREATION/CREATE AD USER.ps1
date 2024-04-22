@@ -66,7 +66,7 @@ foreach ($user in $creation_csv){
 
     
 
-    if ($getuser -eq $null){
+    if ($null -eq $getuser){
 
         # PAS D'UTILISATEUR EXISTANT AVEC LE MEME UNIQUE ID ou LE MEME SAMACCOUNTNAME ou le MEME UPN
 

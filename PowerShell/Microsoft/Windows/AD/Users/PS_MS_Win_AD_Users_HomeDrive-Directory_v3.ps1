@@ -1,6 +1,9 @@
-﻿$HomeDirectory_Theorique ="\\chb.ts1.local\Fichiers\Utilisateurs\"
+﻿
+
+Remove-Variable * -ErrorAction SilentlyContinue
+$HomeDirectory_Theorique ="\\chb.ts1.local\Fichiers\Utilisateurs\"
 $HomeDrive_Theorique = "U:"
-$OU = 'OU=Sages-Femmes,OU=Agents,OU=Utilisateurs,OU=CHBOURG,DC=chb,DC=ts1,DC=local'
+$OU = "OU=Agents,OU=Informaticiens,OU=Utilisateurs,OU=CHBOURG,DC=chb,DC=ts1,DC=local"
 $Domaine = "chb"
 $Export_Dossier = "C:\Temp\"
 $Export_Fichier = "ExportComptes_"+(Get-Date -Format "yyyydd-HHmmss")+".csv"
@@ -146,14 +149,14 @@ function HomeDirectory_Verification {
     #Verification que le HomeDirectory est bien égal à celui défini dans les variables en haut du script
     if (($(Split-path -Path $DossierDeBase_Chemin)+"\") -ne $HomeDirectory_Theorique) {
         #DossierDeBase_Chemin différent de $HomeDirectory_Theorique
-        write-host "Le chemin du dossier personnel pour le compte $Utilisateur n'est pas bon :" ($(Split-path -Path $DossierDeBase_Chemin)+"\") "au lieu de $HomeDirectory_Theorique"
+        write-host "Le chemin du dossier personnel pour le compte [$Utilisateur] n'est pas bon : [$(Split-path -Path $DossierDeBase_Chemin)\] au lieu de [$HomeDirectory_Theorique]"
         #On le modifie :
         Clear-Variable DossierDeBase_Chemin
         HomeDirectory_Modification $Utilisateur
     }
     else {
         #$(Split-path -Path $compte.DossierDeBase_Chemin)+"\") égale à $HomeDirectory_Theorique
-        Write-Host "Le Home Directory de la fiche AD :" ($(Split-path -Path $DossierDeBase_Chemin)+"\") "est bien égal au Home Directory théorique :" $HomeDirectory_Theorique "(donc on ne le modifie pas)"
+        Write-Host "La racine du [HomeDirectory] de la fiche AD de l'utilisateur [$Utilisateur] vaut [$(Split-path -Path $DossierDeBase_Chemin)\] ce qui correspond bien au [HomeDirectory] théorique [$HomeDirectory_Theorique] (donc on ne le modifie pas)"
         #Tout bon, on ne change rien et on passe à la vérification suivante (le nom du dossier de l'utilisateur par rapport à son nom d'utilisateur) :
         #On recupère le nom du dossier (à la fin du chemin)
         #On le compare avec le nom d'utilisateur :
@@ -161,7 +164,7 @@ function HomeDirectory_Verification {
             #Si différent alors on informe et on demande si on souhaite tout de même la modifcation
             $HomeDirectoryVerificationNomDifferentQuestion_Continue = $true 
             while ($HomeDirectoryVerificationNomDifferentQuestion_Continue) {
-                Write-Host "Le dossier dans le chemin de l'utilisateur $(Split-path $DossierDeBase_Chemin -Leaf) est différent du nom d'utilisateur $Utilisateur"
+                Write-Host "Le dossier dans le chemin de l'utilisateur [$(Split-path $DossierDeBase_Chemin -Leaf)] est différent du nom d'utilisateur [$Utilisateur]"
                 $HomeDirectoryVerificationNomDifferentQuestion_Reponse = Read-Host "Voulez-vous tout de même modifier le nom du dossier de l'utilisateur (Oui/Non) ?"
                 switch ($HomeDirectoryVerificationNomDifferentQuestion_Reponse) {
                     { $HomeDirectoryVerificationNomDifferentQuestion_Reponse -like 'oui' } {
@@ -180,6 +183,7 @@ function HomeDirectory_Verification {
             }
         }
         else {
+            Write-Host "Dans le [HomeDirectory], le nom du dossier de l'utilisateur [$Utilisateur] vaut [$(Split-path $DossierDeBase_Chemin -Leaf)] et est donc identique au nom de l'utilisateur, donc on ne le modifie pas"
             #Nom du dossier identique au nom de l'utilisateur, on ne fait rien !
         }
     }
@@ -208,13 +212,14 @@ function HomeDrive_Verification {
     #Verification que le HomeDrive est bien égal à celui défini dans les variables en haut du script
     if ($DossierDeBase_Lettre -ne $HomeDrive_Theorique) {
         #DossierDeBase_Lettre différent de $HomeDrive_Theorique
-        write-host "La lettre pour le dossier personnel du compte $Utilisateur n'est pas bonne : $DossierDeBase_Lettre au lieu de : $HomeDrive_Theorique"
+        write-host "La lettre pour le dossier personnel du compte [$Utilisateur] n'est pas bonne : [$DossierDeBase_Lettre] au lieu de : [$HomeDrive_Theorique]"
         #On le modifie :
         HomeDrive_Modification $Utilisateur
         }
     else {
         #$DossierDeBase_Lettre égale $HomeDrive_Chemin
         #Tout bon, on ne change rien
+        Write-Host "La lettre pour le dossier personnel du compte [$Utilisateur] est égale à [$DossierDeBase_Lettre] et est donc correcte (donc on ne fait rien et on passe à la vérif du HomeDirectory)"
     }
 }
 
@@ -224,7 +229,7 @@ function HomeDrive_Modification {
         [Parameter(Mandatory=$True,Position=0)] [string]$HomeDriveModification_Utilisateur
     )
     #On le modifie :
-    Write-Host "On modifie le HomeDrive avec cette nouvelle lettre : $HomeDrive_Theorique"
+    Write-Host "On modifie le HomeDrive de l'utilisateur [$HomeDriveModification_Utilisateur] avec cette nouvelle lettre : [$HomeDrive_Theorique]"
     Set-ADUser -Identity $HomeDriveModification_Utilisateur -HomeDrive $HomeDrive_Theorique
 }
 
@@ -246,14 +251,14 @@ function Droits_Modification {
     
     #Test si dossier de l'utilisateur existe, si oui on change les droits, sinon on le créé d'abord
     Write-Host "Définition des droits"
-    Write-Host "On vérifie sie le dossier [$HomeDirectory] existe"
+    Write-Host "On vérifie si le dossier [$HomeDirectory] existe"
     if (Test-Path -Path $HomeDirectory) {
         Write-Host "Le dossier existe et on définit les droits dessus"
         $CurrentACL=Get-ACL -path $HomeDirectory
         $CurrentACL.SetAccessRule($NewAccessrule)
         Set-ACL -path $HomeDirectory -AclObject $CurrentACL
     } else {
-        Write-Host "Le dossier n'existepas donc on le créé et on définit les droits dessus"
+        Write-Host "Le dossier n'existe pas donc on le créé et on définit les droits dessus"
         New-Item -Path $HomeDirectory -ItemType Directory
         $CurrentACL=Get-ACL -path $HomeDirectory
         $CurrentACL.SetAccessRule($NewAccessrule)
@@ -265,44 +270,51 @@ function Comptes_Corriger {
     Comptes_RecupererListe
     $CompteurComptes=1
     $CompteurComptes_Total = $script:ComptesADInactifs_Resultat.Count
+    Write-Host "`n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`n"
     foreach ($compte in $script:ComptesADInactifs_Resultat) {        
-        Write-Host "`n"
         Write-Progress -Activity "Traitement des comptes" -status "Traitement du compte n°$CompteurComptes / $CompteurComptes_Total" -PercentComplete ($CompteurComptes / $CompteurComptes_Total * 100)
         Write-Host "Login :" $compte.Utilisateur
         Write-Host "Lettre :" $compte.DossierDeBase_Lettre
         Write-Host "Chemin :" $compte.DossierDeBase_Chemin
-        write-host "`n"
         #HomeDrive_Verification -DossierDeBase_Lettre $compte.DossierDeBase_Lettre -Utilisateur $compte.Utilisateur
         #Avant de vérifer que la lettre de lecteur est bonne, on vérifie qu'elle n'est pas nulle (sinon on ne peut pas appeler la fonction)
+        Write-Host "`n### Verification HomeDrive ###"
         if ($compte.DossierDeBase_Lettre) {
             Write-Host "Lettre définie, donc on la vérifie"
             HomeDrive_Verification $compte.DossierDeBase_Lettre $compte.Utilisateur
         } else {
             Write-Host "Lettre NON DÉFINIE, donc on la définit directement"
+            HomeDrive_Modification $compte.Utilisateur
             $compte.DossierDeBase_Lettre = $HomeDrive_Theorique # = "U:"
             Write-Host "Lettre :" $compte.DossierDeBase_Lettre
         }
 
         #Et de même #Avant de vérifer que le chemin du dossier personnel est bon, on vérifie qu'il n'est pas nul (sinon on ne peut pas appeler la fonction)
+        Write-Host "`n### Verification HomeDirectory ###"
         if ($compte.DossierDeBase_Chemin) {
             Write-Host "Chemin NON VIDE, donc on le vérifie"
             HomeDirectory_Verification $compte.DossierDeBase_Chemin $compte.Utilisateur
+            
             #Si la variable $script:HomeDirectory_Modifie = 1 alors c'est que le chemin a été définit ou modifié et donc il faut positionner les droits
+            Write-Host "`n### Verification/Modification Droits ###"
             if ($script:HomeDirectory_Modifie -eq 1) {
                 Droits_Modification $compte.Utilisateur $script:HomeDirectory_Corrige
+                $script:HomeDirectory_Modifie = 0
             } else {
-                Write-Host "On ne modifie pas les droits !"
+                Write-Host "Le [HomeDirectory] de l'utilisateur ["$compte.Utilisateur"] n'a pas été modifié, donc on ne modifie pas les droits !"
             }
-            Write-Host "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+            Write-Host "`n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`n"
             $CompteurComptes+=1
         } else {
             Write-Host "Chemin VIDE, donc on le définit directement"
-            $compte.DossierDeBase_Chemin = $HomeDirectory_Theorique+$compte.Utilisateur #="\\chb.ts1.local\Fichiers\Utilisateurs\ + compte utilisateur"
-            $script:HomeDirectory_Modifie = 1
-            Write-Host "Chemin :" $compte.DossierDeBase_Chemin
+            #$compte.DossierDeBase_Chemin = $HomeDirectory_Theorique+$compte.Utilisateur #="\\chb.ts1.local\Fichiers\Utilisateurs\ + compte utilisateur"
+            #$script:HomeDirectory_Modifie = 1
+            HomeDirectory_Modification $compte.Utilisateur
+            Write-Host "Chemin :" $script:HomeDirectory_Corrige
             #CHemin modifié (définit) donc on positionne les droits
-            Droits_Modification $compte.Utilisateur $compte.DossierDeBase_Chemin
-            Write-Host "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+            Droits_Modification $compte.Utilisateur $script:HomeDirectory_Corrige
+            $script:HomeDirectory_Modifie = 0
+            Write-Host "`n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`n"
             $CompteurComptes+=1
         }
     }

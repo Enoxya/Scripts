@@ -7,7 +7,7 @@ $ESX_Ki = @("kaboul.$Domaine", "kampala.$Domaine", "kiev.$Domaine", "kyoto.$Doma
 $ConsistencyGroup_Gamma_Nom = 'PRIO_GA'
 $ConsistencyGroup_Ki_Nom = 'PRIO_KI'
 $ConsistencyGroup_Gamma_VirtualVolumes = @('Unity-VPLEX_2To_01', 'Unity-VPLEX_2To_03', 'Unity-VPLEX_2To_05', 'Unity-VPLEX_2To_07', 'Unity-VPLEX_4To_01')
-$ConsistencyGroup_Ki_VirtualVolumes =  @('Unity-VPLEX_2To_02', 'Unity-VPLEX_2To_04', 'Unity-VPLEX_2To_06', 'Unity-VPLEX_4To_02')
+$ConsistencyGroup_Ki_VirtualVolumes =  @('Unity-VPLEX_2To_02', 'Unity-VPLEX_2To_04', 'Unity-VPLEX_2To_06', 'Unity-VPLEX_2To_08', 'Unity-VPLEX_4To_02')
 
 
 .\PowerShell\PowerCLI\PS_PowerCLI_vCenter_Connexion-Infos.ps1
